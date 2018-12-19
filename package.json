@@ -15,6 +15,7 @@
         "sass-loader": "^7.1.0"
     },
     "dependencies": {
-        "fh-components": "^1.4.15"
+        "fh-components": "^1.4.15",
+        "three": "^0.99.0"
     }
 }
