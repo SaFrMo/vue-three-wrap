@@ -1,0 +1,17 @@
+{
+    "name": "vue-three",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "vue serve ./src/ThreeView.vue"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@vue/cli": "^3.2.1",
+        "node-sass": "^4.11.0",
+        "sass-loader": "^7.1.0"
+    }
+}
