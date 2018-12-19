@@ -1,17 +1,17 @@
 <template>
-    <main class="example"><three-view :start="start" :update="update" /></main>
+    <main class="example"><three-vue :start="start" :update="update" /></main>
 </template>
 
 <script>
 /* eslint-disable */
-import ThreeView from '../src/ThreeView'
+import ThreeVue from '../src/ThreeVue'
 import * as THREE from 'three'
 
 let cube
 
 export default {
     components: {
-        'three-view': ThreeView
+        'three-vue': ThreeVue
     },
     methods: {
         start({ scene, camera, renderer }) {

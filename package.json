@@ -1,8 +1,8 @@
 {
-    "name": "vue-three",
+    "name": "three-vue",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "src/ThreeVue.vue",
     "scripts": {
         "dev": "vue serve ./example/App.vue"
     },
