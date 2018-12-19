@@ -13,5 +13,8 @@
         "@vue/cli": "^3.2.1",
         "node-sass": "^4.11.0",
         "sass-loader": "^7.1.0"
+    },
+    "dependencies": {
+        "fh-components": "^1.4.15"
     }
 }
