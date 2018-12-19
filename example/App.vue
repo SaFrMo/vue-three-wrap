@@ -1,17 +1,19 @@
 <template>
-    <main class="example"><three-vue :start="start" :update="update" /></main>
+    <main class="example">
+        <vue-three-wrap :start="start" :update="update" />
+    </main>
 </template>
 
 <script>
 /* eslint-disable */
-import ThreeVue from '../src/ThreeVue'
+import VueThree from '../src/VueThreeWrap'
 import * as THREE from 'three'
 
 let cube
 
 export default {
     components: {
-        'three-vue': ThreeVue
+        'vue-three-wrap': VueThree
     },
     methods: {
         start({ scene, camera, renderer }) {

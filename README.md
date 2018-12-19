@@ -2,21 +2,25 @@ Bare-bones Vue component wrapping a THREE.js instance.
 
 Usage:
 
+`npm install vue-three-wrap --save`
+
+Then:
+
 ```html
 <template>
     <main class="example">
-        <!-- three-vue will stretch to fit its container by default -->
-        <three-vue :start="start" :update="update" />
+        <!-- vue-three-wrap will stretch to fit its container by default -->
+        <vue-three-wrap :start="start" :update="update" />
     </main>
 </template>
 
 <script>
-import ThreeVue from 'three-vue'
+import VueThreeWrap from 'vue-three-wrap'
 import * as THREE from 'three'
 
 export default {
     components: {
-        'three-vue': ThreeVue
+        'vue-three-wrap': VueThreeWrap
     },
     methods: {
         // called once when the scene is created
