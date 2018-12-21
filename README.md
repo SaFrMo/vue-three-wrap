@@ -1,5 +1,7 @@
 Bare-bones Vue component wrapping a THREE.js instance.
 
+See examples [here](https://three-examples.netlify.com/) ([source](https://github.com/SaFrMo/threejs-examples/tree/master/src/examples)).
+
 Usage:
 
 `npm install vue-three-wrap --save`
