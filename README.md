@@ -2,6 +2,14 @@ Bare-bones Vue component wrapping a THREE.js instance.
 
 See examples [here](https://three-examples.netlify.com/) ([source](https://github.com/SaFrMo/threejs-examples/tree/master/src/examples)).
 
+# Table of Contents
+
+1. [Main](#main)
+1. [Mixins](#mixins)
+    1. [Raycaster](#raycaster)
+
+## Main
+
 Usage:
 
 `npm install vue-three-wrap --save`
@@ -49,3 +57,33 @@ export default {
 | start           | Function({ scene, camera, renderer }) | null                                                 | Function to be called once at scene creation.                                                                             |
 | update          | Function({ scene, camera, renderer }) | null                                                 | Function called once per frame.                                                                                           |
 | width           | Number                                | -1                                                   | Width of the canvas. -1 to take up full width of container.                                                               |
+
+## Mixins
+
+### Raycaster
+
+A shortcut to THREE's raycaster.
+
+Example:
+
+```html
+<template>
+    <vue-three-wrap :update="update"/>
+</template>
+
+<script>
+import raycaster from 'vue-three-wrap/mixins/raycaster'
+
+export default {
+    mixins: [raycaster],
+    methods: {
+        update({camera}){
+            // updates raycaster with default mouse values
+            this.updateRaycaster(camera)
+        }
+    }
+}
+</script>
+```
+
+## TODO: Continue

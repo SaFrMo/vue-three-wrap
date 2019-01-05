@@ -17,5 +17,9 @@
     "dependencies": {
         "fh-components": "^1.4.15",
         "three": "^0.99.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/safrmo/vue-three.git"
     }
 }
