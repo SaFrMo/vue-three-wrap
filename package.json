@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "vue serve ./example/App.vue",
         "build": "vue build --target lib --name vue-three-wrap ./src/VueThreeWrap.vue",
-        "prepublishOnly": "build"
+        "prepublishOnly": "npm run build"
     },
     "keywords": [
         "three",
