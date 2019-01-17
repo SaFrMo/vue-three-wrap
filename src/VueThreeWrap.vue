@@ -42,7 +42,8 @@ export default {
     },
     data() {
         return {
-            three: {}
+            three: {},
+            running: false
         }
     },
     mounted() {
@@ -92,7 +93,7 @@ export default {
             this.three.renderer.setSize(this.cmpWidth, this.cmpHeight)
         },
         render() {
-            if (!this) return
+            if (!this.running) return
 
             // request next frame
             if (this.renderLoop) {
@@ -115,6 +116,9 @@ export default {
             if (newVal == oldVal) return
             this.updateCamera()
         }
+    },
+    beforeDestroy() {
+        this.running = false
     }
 }
 </script>
