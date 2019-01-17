@@ -43,7 +43,7 @@ export default {
     data() {
         return {
             three: {},
-            running: false
+            running: true
         }
     },
     mounted() {
