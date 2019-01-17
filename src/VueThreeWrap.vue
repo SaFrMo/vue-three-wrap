@@ -1,12 +1,18 @@
 <template>
     <div class="three-view">
-        <canvas ref="canvas" :width="cmpWidth" :height="cmpHeight" />
+        <canvas
+            ref="canvas"
+            :width="cmpWidth"
+            :height="cmpHeight"
+            v-if="isCanvas"
+        />
     </div>
 </template>
 
 <script>
 import rect from 'fh-components/mixins/rect'
 import * as THREE from 'three'
+import * as CSS from './css3d'
 
 export default {
     mixins: [rect],
@@ -38,6 +44,10 @@ export default {
         renderLoop: {
             type: Boolean,
             default: true
+        },
+        renderType: {
+            type: String,
+            default: 'webgl'
         }
     },
     data() {
@@ -50,12 +60,17 @@ export default {
         // create scene, camera, and renderer
         this.three.scene = new THREE.Scene()
         this.three.camera = this.camera
-        this.three.renderer = new THREE.WebGLRenderer({
-            canvas: this.$refs.canvas,
-            antialias: true,
-            alpha: true,
-            ...this.rendererOptions
-        })
+
+        if (this.renderType == 'webgl') {
+            this.three.renderer = new THREE.WebGLRenderer({
+                canvas: this.$refs.canvas,
+                antialias: true,
+                alpha: true,
+                ...this.rendererOptions
+            })
+        } else if (this.renderType == 'css') {
+            this.three.renderer = new CSS.CSS3DRenderer()
+        }
 
         // update camera
         this.updateCamera()
@@ -80,6 +95,9 @@ export default {
             if (this.height != -1) return this.height
             // fall back to client rect size or 0
             return this.clientRect ? this.clientRect.height : 0
+        },
+        isCanvas() {
+            return this.renderType == 'webgl'
         }
     },
     methods: {

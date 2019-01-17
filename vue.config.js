@@ -1,10 +1,13 @@
 module.exports = {
     configureWebpack: {
-        externals: {
-            three: {
-                commonjs: 'three',
-                commonjs2: 'three'
-            }
-        }
+        externals:
+            process.env.NODE_ENV == 'production'
+                ? {
+                      three: {
+                          commonjs: 'three',
+                          commonjs2: 'three'
+                      }
+                  }
+                : {}
     }
 }
