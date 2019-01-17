@@ -6,6 +6,10 @@
             :height="cmpHeight"
             v-if="isCanvas"
         />
+
+        <slot />
+
+        <div class="container" ref="container" />
     </div>
 </template>
 
@@ -70,6 +74,7 @@ export default {
             })
         } else if (this.renderType == 'css') {
             this.three.renderer = new CSS.CSS3DRenderer()
+            this.$refs.container.appendChild(this.three.renderer.domElement)
         }
 
         // update camera
@@ -77,7 +82,13 @@ export default {
 
         // run start function if one provided
         if (this.start) {
-            this.start(this.three)
+            this.start({
+                ...this.three,
+                slot: this.$slots.default,
+                elements: this.$slots.default
+                    ? this.$slots.default.map(v => v.elm)
+                    : []
+            })
         }
 
         // kick animation
@@ -119,7 +130,13 @@ export default {
             }
 
             if (this.update) {
-                this.update(this.three)
+                this.update({
+                    ...this.three,
+                    slot: this.$slots.default,
+                    elements: this.$slots.default
+                        ? this.$slots.default.map(v => v.elm)
+                        : []
+                })
             }
 
             this.three.renderer.render(this.three.scene, this.three.camera)

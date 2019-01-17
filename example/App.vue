@@ -1,7 +1,17 @@
 <template>
     <main class="example">
         <vue-three-wrap :start="start1" :update="update1" />
-        <vue-three-wrap :start="start2" :update="update2" renderType="css" />
+
+        <vue-three-wrap
+            :start="start2"
+            :update="update2"
+            renderType="css"
+            class="css"
+        >
+            <h2>I'm an h2</h2>
+            <p>And I'm a paragraph</p>
+        </vue-three-wrap>
+
         <vue-three-wrap />
         <vue-three-wrap />
     </main>
@@ -11,8 +21,10 @@
 /* eslint-disable */
 import VueThree from '../src/VueThreeWrap'
 import * as THREE from 'three'
+import * as CSS from '../src/css3d'
 
 let cube
+let cssRef = {}
 
 export default {
     components: {
@@ -40,8 +52,22 @@ export default {
             cube.rotation.y -= 0.01
         },
 
-        start2({ scene, camera, renderer }) {},
-        update2({ scene, camera, renderer }) {}
+        start2({ scene, camera, renderer, elements }) {
+            cssRef.h2 = new CSS.CSS3DObject(elements[0])
+            cssRef.p = new CSS.CSS3DObject(elements[1])
+            scene.add(cssRef.h2)
+            scene.add(cssRef.p)
+
+            cssRef.h2.position.set(20, 0, 0)
+            cssRef.h2.lookAt(new THREE.Vector3(0, 20, 20))
+
+            cssRef.p.position.set(-20, -20, 0)
+            cssRef.p.lookAt(new THREE.Vector3(0, 0, 20))
+            camera.position.z = 150
+        },
+        update2({ scene, camera, renderer }) {
+            // cssRef.h2.rotation.z += 0.01
+        }
     }
 }
 </script>
@@ -63,6 +89,10 @@ export default {
     & > div {
         background: white;
         position: relative;
+    }
+
+    .css {
+        font-size: 16px;
     }
 }
 </style>
