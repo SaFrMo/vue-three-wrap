@@ -92,6 +92,8 @@ export default {
             this.three.renderer.setSize(this.cmpWidth, this.cmpHeight)
         },
         render() {
+            if (!this) return
+
             // request next frame
             if (this.renderLoop) {
                 requestAnimationFrame(this.render)
