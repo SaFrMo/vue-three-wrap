@@ -163,7 +163,7 @@ export default {
 </script>
 
 <style lang="scss">
-.three-view {
+.vue-three-wrap {
     position: absolute;
     top: 0;
     right: 0;
