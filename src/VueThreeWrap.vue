@@ -87,7 +87,7 @@ export default {
                 CSS,
                 slot: this.$slots.default,
                 elements: this.$slots.default
-                    ? this.$slots.default.map(v => v.elm)
+                    ? this.$slots.default.map(v => v.elm).filter(e => e.style)
                     : []
             })
         }
@@ -136,7 +136,9 @@ export default {
                     CSS,
                     slot: this.$slots.default,
                     elements: this.$slots.default
-                        ? this.$slots.default.map(v => v.elm)
+                        ? this.$slots.default
+                              .map(v => v.elm)
+                              .filter(e => e.style)
                         : []
                 })
             }
