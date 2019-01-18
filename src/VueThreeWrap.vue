@@ -84,6 +84,7 @@ export default {
         if (this.start) {
             this.start({
                 ...this.three,
+                CSS,
                 slot: this.$slots.default,
                 elements: this.$slots.default
                     ? this.$slots.default.map(v => v.elm)
@@ -132,6 +133,7 @@ export default {
             if (this.update) {
                 this.update({
                     ...this.three,
+                    CSS,
                     slot: this.$slots.default,
                     elements: this.$slots.default
                         ? this.$slots.default.map(v => v.elm)

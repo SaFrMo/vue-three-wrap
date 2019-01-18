@@ -1,6 +1,6 @@
 {
     "name": "vue-three-wrap",
-    "version": "1.1.5",
+    "version": "1.1.6",
     "description": "Bare-bones Vue component wrapping a THREE.js instance.",
     "main": "./dist/vue-three-wrap.common.js",
     "scripts": {
@@ -21,7 +21,8 @@
         "three": "^0.99.0"
     },
     "dependencies": {
-        "fh-components": "^1.4.15"
+        "fh-components": "^1.4.15",
+        "three-renderer-css3d": "^1.0.0"
     },
     "repository": {
         "type": "git",
