@@ -1,3 +1,5 @@
+// Copied from https://www.npmjs.com/package/three-renderer-css3d
+
 import { Object3D, Matrix4, Vector3, Math as ThreeMath } from 'three'
 
 /**

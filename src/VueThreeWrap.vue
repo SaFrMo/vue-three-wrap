@@ -1,5 +1,5 @@
 <template>
-    <div class="three-view">
+    <div class="vue-three-wrap">
         <canvas
             ref="canvas"
             :width="cmpWidth"

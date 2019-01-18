@@ -21,7 +21,6 @@
 /* eslint-disable */
 import VueThree from '../src/VueThreeWrap'
 import * as THREE from 'three'
-import * as CSS from '../src/css3d'
 
 let cube
 let cssRef = {}
@@ -52,7 +51,7 @@ export default {
             cube.rotation.y -= 0.01
         },
 
-        start2({ scene, camera, renderer, elements }) {
+        start2({ scene, camera, renderer, elements, CSS }) {
             cssRef.h2 = new CSS.CSS3DObject(elements[0])
             cssRef.p = new CSS.CSS3DObject(elements[1])
             scene.add(cssRef.h2)
@@ -65,8 +64,8 @@ export default {
             cssRef.p.lookAt(new THREE.Vector3(0, 0, 20))
             camera.position.z = 150
         },
-        update2({ scene, camera, renderer }) {
-            // cssRef.h2.rotation.z += 0.01
+        update2() {
+            cssRef.h2.rotation.z += 0.01
         }
     }
 }
