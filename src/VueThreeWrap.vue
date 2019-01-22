@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import rect from 'fh-components/mixins/rect'
+import rect from '~/assets/mixins/rect'
 import * as THREE from 'three'
-import * as CSS from './css3d'
+import * as CSS from '~/assets/css3d'
 
 export default {
     mixins: [rect],
@@ -38,8 +38,12 @@ export default {
             default: null
         },
         camera: {
-            type: Object,
-            default: () => new THREE.PerspectiveCamera(75, 0.5625, 0.1, 1000)
+            type: [Object, Boolean],
+            default: false
+        },
+        cameraType: {
+            type: [Object, Boolean, String],
+            default: 'perspective'
         },
         rendererOptions: {
             type: Object,
@@ -52,6 +56,10 @@ export default {
         renderType: {
             type: String,
             default: 'webgl'
+        },
+        fov: {
+            type: [Number, String],
+            default: 75
         }
     },
     data() {
@@ -63,7 +71,37 @@ export default {
     mounted() {
         // create scene, camera, and renderer
         this.three.scene = new THREE.Scene()
-        this.three.camera = this.camera
+
+        // use camera if user has created one
+        let camera = this.camera
+        const fov = parseInt(this.fov)
+
+        // otherwise, use default camera
+        if (camera === false) {
+            const cameraType = this.cameraType.toLowerCase()
+
+            // use ortho
+            if (cameraType == 'orthographic' || cameraType == 'ortho') {
+                const width = fov / (this.cmpHeight / this.cmpWidth)
+                const height = fov
+                const halfWidth = width / 2
+                const halfHeight = height / 2
+                camera = new THREE.OrthographicCamera(
+                    -halfWidth,
+                    halfWidth,
+                    halfHeight,
+                    -halfHeight,
+                    0.1,
+                    1000
+                )
+            }
+            // fallback to perspective
+            else {
+                camera = new THREE.PerspectiveCamera(fov, 0.5625, 0.1, 1000)
+            }
+        }
+
+        this.three.camera = camera
 
         if (this.renderType == 'webgl') {
             this.three.renderer = new THREE.WebGLRenderer({
@@ -117,8 +155,21 @@ export default {
             // ignore if no camera
             if (!this.three.camera) return
 
-            // update aspect ratio, projection matrix, and renderer size
-            this.three.camera.aspect = this.cmpWidth / this.cmpHeight
+            if (this.three.camera.isOrthographicCamera) {
+                const fov = parseInt(this.fov)
+                const width = fov / (this.cmpHeight / this.cmpWidth)
+                const height = fov
+                const halfWidth = width / 2
+                const halfHeight = height / 2
+                this.three.camera.left = -halfWidth
+                this.three.camera.right = halfWidth
+                this.three.camera.top = halfHeight
+                this.three.camera.bottom = -halfHeight
+            } else {
+                // update aspect ratio, projection matrix, and renderer size
+                this.three.camera.aspect = this.cmpWidth / this.cmpHeight
+            }
+
             this.three.camera.updateProjectionMatrix()
             this.three.renderer.setSize(this.cmpWidth, this.cmpHeight)
         },
@@ -161,14 +212,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-.vue-three-wrap {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    font-size: 0;
-}
-</style>
