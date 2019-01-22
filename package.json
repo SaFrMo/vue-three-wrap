@@ -1,11 +1,13 @@
 {
     "name": "vue-three-wrap",
-    "version": "1.2.2",
+    "version": "2.0.0",
     "description": "Bare-bones Vue component wrapping a THREE.js instance.",
     "main": "./dist/vue-three-wrap.common.js",
     "scripts": {
         "dev": "vue serve ./example/App.vue",
-        "build": "vue build --target lib --name vue-three-wrap ./src/VueThreeWrap.vue",
+        "buildMixins": "npx babel src/mixins --out-dir mixins --presets=@babel/preset-env",
+        "buildComponent": "vue build --target lib --name vue-three-wrap ./src/VueThreeWrap.vue",
+        "build": "npm run buildMixins && npm run buildComponent",
         "prepublishOnly": "npm run build"
     },
     "keywords": [
@@ -15,6 +17,9 @@
     "author": "Sander Moolin",
     "license": "MIT",
     "devDependencies": {
+        "@babel/cli": "^7.2.3",
+        "@babel/core": "^7.2.2",
+        "@babel/preset-env": "^7.3.1",
         "@vue/cli": "^3.2.1",
         "node-sass": "^4.11.0",
         "sass-loader": "^7.1.0",

@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import rect from '~/assets/mixins/rect'
+import rect from 'fh-components/mixins/rect'
 import * as THREE from 'three'
-import * as CSS from '~/assets/css3d'
+import * as CSS from './css3d'
 
 export default {
     mixins: [rect],
