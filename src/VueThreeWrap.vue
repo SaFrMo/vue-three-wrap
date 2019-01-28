@@ -74,7 +74,7 @@ export default {
 
         // use camera if user has created one
         let camera = this.camera
-        const fov = parseInt(this.fov)
+        const fov = parseFloat(this.fov)
 
         // otherwise, use default camera
         if (camera === false) {

@@ -1,7 +1,9 @@
 <template>
     <main class="example">
+        <!-- Regular ol' spinning cube -->
         <vue-three-wrap :start="start1" :update="update1" />
 
+        <!-- CSS 3D text -->
         <vue-three-wrap
             :start="start2"
             :update="update2"
@@ -12,8 +14,15 @@
             <p>And I'm a paragraph</p>
         </vue-three-wrap>
 
-        <vue-three-wrap />
-        <vue-three-wrap />
+        <!-- Orthographic camera -->
+        <vue-three-wrap
+            :start="start3"
+            :update="update3"
+            camera-type="ortho"
+            fov="10"
+        />
+
+        <!-- <vue-three-wrap /> -->
     </main>
 </template>
 
@@ -22,8 +31,18 @@
 import VueThree from '../src/VueThreeWrap'
 import * as THREE from 'three'
 
-let cube
+const ref = {}
 let cssRef = {}
+
+const addLight = scene => {
+    // add directional light
+    const light = new THREE.DirectionalLight(0xffffff, 1)
+    light.position.set(5, 5, 10)
+    scene.add(light)
+
+    // add ambient light
+    scene.add(new THREE.AmbientLight(0x888888))
+}
 
 export default {
     components: {
@@ -32,23 +51,18 @@ export default {
     methods: {
         // top left
         start1({ scene, camera, renderer }) {
-            // add directional light
-            const light = new THREE.DirectionalLight(0xffffff, 1)
-            light.position.set(5, 5, 10)
-            scene.add(light)
-
-            // add ambient light
-            scene.add(new THREE.AmbientLight(0x404040))
+            // add light to scene
+            addLight(scene)
 
             // example adding a cube to the scene
             const geometry = new THREE.BoxGeometry(1, 1, 1)
             const material = new THREE.MeshLambertMaterial({ color: 0x33cc33 })
-            cube = new THREE.Mesh(geometry, material)
-            scene.add(cube)
+            ref.cube = new THREE.Mesh(geometry, material)
+            scene.add(ref.cube)
             camera.position.z = 10
         },
         update1({ scene, camera, renderer }) {
-            cube.rotation.y -= 0.01
+            ref.cube.rotation.y -= 0.01
         },
 
         start2({ scene, camera, renderer, elements, CSS }) {
@@ -66,6 +80,36 @@ export default {
         },
         update2() {
             cssRef.h2.rotation.z += 0.01
+        },
+
+        start3({ scene, camera }) {
+            addLight(scene)
+
+            const geo = new THREE.BoxGeometry(1, 1, 1)
+            const mat = new THREE.MeshLambertMaterial({ color: 0xff00aa })
+            //
+            // // add a bunch of cubes
+            for (let x = 0; x < 10; x++) {
+                for (let y = 0; y < 10; y++) {
+                    const cube = new THREE.Mesh(geo, mat)
+                    cube.position.x = x * 2
+                    cube.position.z = y * 2
+                    scene.add(cube)
+                }
+            }
+
+            camera.position.x = 1
+            camera.position.y = 6
+            camera.position.z = 2
+
+            camera.lookAt(8, 0, 7)
+        },
+        update3({ camera }) {
+            // example rotation
+            // camera.rotateOnWorldAxis(
+            //     new THREE.Vector3(0, 1, 0),
+            //     Math.sin(Date.now() * 0.0003) * 0.0005
+            // )
         }
     }
 }
