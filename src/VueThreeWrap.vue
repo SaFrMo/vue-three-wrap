@@ -21,22 +21,6 @@ import * as CSS from './css3d'
 export default {
     mixins: [rect],
     props: {
-        width: {
-            type: Number,
-            default: -1
-        },
-        height: {
-            type: Number,
-            default: -1
-        },
-        start: {
-            type: Function,
-            default: null
-        },
-        update: {
-            type: Function,
-            default: null
-        },
         camera: {
             type: [Object, Boolean],
             default: false
@@ -44,6 +28,14 @@ export default {
         cameraType: {
             type: [Object, Boolean, String],
             default: 'perspective'
+        },
+        fov: {
+            type: [Number, String],
+            default: 75
+        },
+        height: {
+            type: Number,
+            default: -1
         },
         rendererOptions: {
             type: Object,
@@ -57,9 +49,17 @@ export default {
             type: String,
             default: 'webgl'
         },
-        fov: {
-            type: [Number, String],
-            default: 75
+        start: {
+            type: Function,
+            default: null
+        },
+        update: {
+            type: Function,
+            default: null
+        },
+        width: {
+            type: Number,
+            default: -1
         }
     },
     data() {

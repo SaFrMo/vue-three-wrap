@@ -131,5 +131,3 @@ export default {
 }
 </script>
 ```
-
-## TODO: Continue
