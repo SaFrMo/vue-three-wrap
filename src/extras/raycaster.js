@@ -30,6 +30,7 @@ export default class {
         // warn if anything required is missing
         if (!this.el) {
             if (this.debug) {
+                // eslint-disable-next-line
                 console.warn(
                     'No valid element passed to raycaster. Exiting early.'
                 )
@@ -68,6 +69,7 @@ export default class {
         // make sure we have a camera...
         if (camera == null && this.camera == null) {
             if (this.debug) {
+                // eslint-disable-next-line
                 console.warn(
                     'No camera set, canceling raycast. (Try calling cast(camera)?)'
                 )
@@ -78,6 +80,7 @@ export default class {
         // ...and a raycaster
         if (!this.raycaster) {
             if (this.debug) {
+                // eslint-disable-next-line
                 console.warn('No raycaster available, canceling raycast.')
             }
             return

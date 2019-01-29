@@ -5,9 +5,9 @@
     "main": "./dist/vue-three-wrap.common.js",
     "scripts": {
         "dev": "vue serve ./example/App.vue",
-        "buildMixins": "npx babel src/mixins --out-dir mixins --presets=@babel/preset-env",
+        "buildExtras": "npx babel src/extras --out-dir extras --presets=@babel/preset-env",
         "buildComponent": "vue build --target lib --name vue-three-wrap ./src/VueThreeWrap.vue",
-        "build": "npm run buildMixins && npm run buildComponent",
+        "build": "npm run buildExtras && npm run buildComponent",
         "prepublishOnly": "npm run build"
     },
     "keywords": [
@@ -36,7 +36,7 @@
     "files": [
         "dist/*",
         "src/*",
-        "mixins/*",
+        "extras/*",
         "example/*",
         "*.json",
         "*.js"
