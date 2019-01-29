@@ -61,8 +61,6 @@ export default class {
         this.interpolatedY = interpolate([0, clientRect.height], [1, -1])(
             this.mouseY
         )
-
-        // console.log(this.interpolatedX, this.interpolatedY)
     }
 
     cast(coordinates = null, camera = null) {

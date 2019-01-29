@@ -168,6 +168,40 @@ export default {
 
 ### Constructor
 
+Defaults shown.
+
+```js
+new Raycaster({
+    // the area to check on mouseover
+    el: document.querySelector('canvas'),
+
+    // the camera that will be doing the raycasting
+    camera: null,
+
+    // whether or not to print debug messages
+    debug: false,
+
+    // raycaster (optional - will create automatically if not specified)
+    raycaster: null
+})
+```
+
 ### Properties
 
+| Name          | Type   | Notes                                                   |
+| ------------- | ------ | ------------------------------------------------------- |
+| interpolatedX | Number | The normalized relative mouse X position, from -1 to 1. |
+| interpolatedY | Number | The normalized relative mouse Y position, from -1 to 1. |
+| mouseX        | Number | The latest mouseX position relative to the container.   |
+| mouseY        | Number | The latest mouseY position relative to the container.   |
+
 ### Methods
+
+| Name             | Arguments                                                         | Notes                                                                                                                                                                                              |
+| ---------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| init             | options (same as constructor)                                     | Initializes this raycaster. Same method as called by constructor.                                                                                                                                  |
+| updateMouse      | mouse event                                                       | Updates relative mouse coordinates. Called internally.                                                                                                                                             |
+| cast             | `{ coordinates: { x: Number, y: Number }, camera: THREE.Camera }` | Raycast and save the results internally. If `coordinates` are unspecified, uses the last coordinates set by `updateMouse`. If `camera` is unspecified, uses the camera added during instantiation. |
+| intersectObject  | (object, recursive, optionalTarget, coordinates, camera)          | Calls `cast()` with the given `coordinates` and `camera`, then runs [intersectObject](https://threejs.org/docs/index.html#api/en/core/Raycaster.intersectObject) with the first three arguments.   |
+| intersectObjects | (objects, recursive, optionalTarget, coordinates, camera)         | Calls `cast()` with the given `coordinates` and `camera`, then runs [intersectObjects](https://threejs.org/docs/index.html#api/en/core/Raycaster.intersectObjects) with the first three arguments. |
+| destroy          | None                                                              | Destroys the event listener created during `init`.                                                                                                                                                 |
