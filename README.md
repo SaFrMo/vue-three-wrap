@@ -7,7 +7,7 @@ See examples [here](https://three-examples.netlify.com/) ([source](https://githu
 1. [Main](#main)
     1. [Props](#props)
     1. [CSS Renderer](#css-renderer)
-1. [Mixins](#mixins)
+1. [Extras](#mixins)
     1. [Raycaster](#raycaster)
 
 ## Main
@@ -126,30 +126,48 @@ To do so:
 
 Otherwise, it's just like working with a normal THREE.js scene, just with usable DOM objects.
 
-## Mixins
+## Extras
 
 ### Raycaster
 
-A shortcut to THREE's raycaster.
+A class that wraps Three's [raycaster](https://threejs.org/docs/index.html#api/en/core/Raycaster).
 
 Example:
 
 ```html
 <template>
-    <vue-three-wrap :update="update"/>
+    <vue-three-wrap ref="threeWrap" :start="start" :update="update"/>
 </template>
 
 <script>
-import raycaster from 'vue-three-wrap/mixins/raycaster'
+import Raycaster from 'vue-three-wrap/extras/raycaster'
+
+const ref = {}
 
 export default {
-    mixins: [raycaster],
     methods: {
-        update({camera}){
-            // updates raycaster with default mouse values
-            this.updateRaycaster(camera)
+        start({camera}){
+            ref.raycaster = new Raycaster({
+                el: this.$refs.threeWrap.$el,
+                camera: camera
+            })
+
+            // (add your scene objects here)
+        },
+        update({scene}){
+            // cast against all objects in the scene
+            const intersects = ref.raycaster.intersectObjects(scene.children)
+            // get objects from intersections
+            const intersectedObjects = intersects.map(i => i.object)
+            console.log(intersects, intersectedObjects)
         }
     }
 }
 </script>
 ```
+
+### Constructor
+
+### Properties
+
+### Methods
