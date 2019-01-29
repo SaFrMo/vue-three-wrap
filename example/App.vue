@@ -14,12 +14,13 @@
             <p>And I'm a paragraph</p>
         </vue-three-wrap>
 
-        <!-- Orthographic camera -->
+        <!-- Orthographic camera + raycaster -->
         <vue-three-wrap
             :start="start3"
             :update="update3"
             camera-type="ortho"
             fov="10"
+            ref="ortho"
         />
 
         <!-- <vue-three-wrap /> -->
@@ -30,6 +31,7 @@
 /* eslint-disable */
 import VueThree from '../src/VueThreeWrap'
 import * as THREE from 'three'
+import Raycaster from '../src/extras/raycaster'
 
 const ref = {}
 let cssRef = {}
@@ -85,16 +87,21 @@ export default {
         start3({ scene, camera }) {
             addLight(scene)
 
-            const geo = new THREE.BoxGeometry(1, 1, 1)
-            const mat = new THREE.MeshLambertMaterial({ color: 0xff00aa })
-            //
-            // // add a bunch of cubes
+            ref.orthoCubes = []
+
+            // add a bunch of cubes
             for (let x = 0; x < 10; x++) {
                 for (let y = 0; y < 10; y++) {
+                    const geo = new THREE.BoxGeometry(1, 1, 1)
+                    const mat = new THREE.MeshLambertMaterial({
+                        color: 0xff00aa
+                    })
+
                     const cube = new THREE.Mesh(geo, mat)
                     cube.position.x = x * 2
                     cube.position.z = y * 2
                     scene.add(cube)
+                    ref.orthoCubes.push(cube)
                 }
             }
 
@@ -103,13 +110,26 @@ export default {
             camera.position.z = 2
 
             camera.lookAt(8, 0, 7)
+
+            ref.raycaster = new Raycaster({
+                el: this.$refs.ortho.$el,
+                debug: true,
+                camera
+            })
         },
         update3({ camera }) {
-            // example rotation
-            // camera.rotateOnWorldAxis(
-            //     new THREE.Vector3(0, 1, 0),
-            //     Math.sin(Date.now() * 0.0003) * 0.0005
-            // )
+            const intersects = ref.raycaster.intersectObjects(ref.orthoCubes)
+            const intersectedObjects = intersects.map(i => i.object)
+
+            // default to pink
+            ref.orthoCubes.forEach(cube => {
+                cube.material.color.setHex(0xff00aa)
+            })
+
+            // hover = blue
+            intersectedObjects.forEach(obj =>
+                obj.material.color.setHex(0x0000ff)
+            )
         }
     }
 }

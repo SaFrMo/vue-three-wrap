@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import { pointer, transform } from 'popmotion'
-import { asyncWaitFor } from '@/utils/shared'
 const { interpolate } = transform
 
 export default {
@@ -14,8 +13,6 @@ export default {
         }
     },
     async mounted() {
-        await asyncWaitFor(this.canvasSelector)
-
         if (this.buildPointer) {
             pointer()
                 .pipe(v => {
