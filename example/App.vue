@@ -23,7 +23,8 @@
             ref="ortho"
         />
 
-        <!-- <vue-three-wrap /> -->
+        <!-- Shader example -->
+        <shader-example :start="start4" :update="update4" />
     </main>
 </template>
 
@@ -32,6 +33,8 @@
 import VueThree from '../src/VueThreeWrap'
 import * as THREE from 'three'
 import Raycaster from '../src/extras/raycaster'
+import CustomSinCurve from './curve-setup'
+import ShaderExample from './ShaderExample'
 
 const ref = {}
 let cssRef = {}
@@ -48,7 +51,8 @@ const addLight = scene => {
 
 export default {
     components: {
-        'vue-three-wrap': VueThree
+        'vue-three-wrap': VueThree,
+        'shader-example': ShaderExample
     },
     methods: {
         // top left
@@ -67,6 +71,7 @@ export default {
             ref.cube.rotation.y -= 0.01
         },
 
+        // CSS renderer
         start2({ scene, camera, renderer, elements, CSS }) {
             cssRef.h2 = new CSS.CSS3DObject(elements[0])
             cssRef.p = new CSS.CSS3DObject(elements[1])
@@ -84,6 +89,7 @@ export default {
             cssRef.h2.rotation.z += 0.01
         },
 
+        // Orthographic camera + raycaster
         start3({ scene, camera }) {
             addLight(scene)
 
@@ -130,6 +136,36 @@ export default {
             intersectedObjects.forEach(obj =>
                 obj.material.color.setHex(0x0000ff)
             )
+        },
+
+        // Shader
+        async start4({ scene, camera, vertexShader, fragmentShader }) {
+            ref.mountTime = Date.now()
+            camera.position.y = 5
+            camera.position.z = 50
+
+            // uniforms
+            const uniforms = {
+                amplitude: { value: 1.0 },
+                color: { value: new THREE.Color(0xcc4444) },
+                time: { value: Date.now() }
+            }
+
+            // shader material
+            const shaderMat = new THREE.ShaderMaterial({
+                uniforms,
+                vertexShader,
+                fragmentShader
+            })
+
+            // pipe
+            const path = new CustomSinCurve(10)
+            const geo = new THREE.TubeGeometry(path, 64, 4, 8, false)
+            ref.pipe = new THREE.Mesh(geo, shaderMat)
+            scene.add(ref.pipe)
+        },
+        update4() {
+            ref.pipe.material.uniforms.time.value = Date.now() - ref.mountTime
         }
     }
 }

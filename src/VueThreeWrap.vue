@@ -126,7 +126,8 @@ export default {
                 slot: this.$slots.default,
                 elements: this.$slots.default
                     ? this.$slots.default.map(v => v.elm).filter(e => e.style)
-                    : []
+                    : [],
+                ...this.getShaders()
             })
         }
 
@@ -190,11 +191,23 @@ export default {
                         ? this.$slots.default
                               .map(v => v.elm)
                               .filter(e => e.style)
-                        : []
+                        : [],
+                    ...this.getShaders()
                 })
             }
 
             this.three.renderer.render(this.three.scene, this.three.camera)
+        },
+        getShaders() {
+            const vert = this.$el.querySelector('script[type="shader/vertex"]')
+            const vertexShader = vert ? vert.textContent : null
+
+            const frag = this.$el.querySelector(
+                'script[type="shader/fragment"]'
+            )
+            const fragmentShader = frag ? frag.textContent : null
+
+            return { vertexShader, fragmentShader }
         }
     },
     watch: {

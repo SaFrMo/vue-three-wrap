@@ -6,6 +6,7 @@ See examples [here](https://three-examples.netlify.com/) ([source](https://githu
 
 1. [Main](#main)
     1. [Props](#props)
+    1. [`start` and `update`](#start-and-update)
     1. [CSS Renderer](#css-renderer)
 1. [Extras](#mixins)
     1. [Raycaster](#raycaster)
@@ -61,18 +62,43 @@ export default {
 
 ### Props
 
-| Name            | Type                                                       | Default                                              | Notes                                                                                                                                                    |
-| --------------- | ---------------------------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| camera          | Object                                                     | `new THREE.PerspectiveCamera(75, 0.5625, 0.1, 1000)` | Main camera.                                                                                                                                             |
-| cameraType      | Object, Boolean, String                                    | `perspective`                                        | `perspective`, `orthographic`, or `ortho`. Creates the desired [camera](https://threejs.org/docs/index.html#api/en/cameras/Camera) as the scene default. |
-| fov             | Number, String                                             | `75`                                                 | Camera field of view.                                                                                                                                    |
-| height          | Number                                                     | -1                                                   | Height of the canvas. -1 to take up full height of container.                                                                                            |
-| rendererOptions | Object                                                     | {}                                                   | Object of [options](https://threejs.org/docs/#api/en/renderers/WebGLRenderer) to be passed directly to the WebGLRenderer.                                |
-| renderLoop      | Boolean                                                    | true                                                 | Whether or not to call `update` every frame.                                                                                                             |
-| renderType      | String                                                     | webgl                                                | `webgl` or `css`. Uses the [CSS3DRenderer](https://threejs.org/docs/#examples/renderers/CSS3DRenderer) if set to `css`. (See [below](#css-renderer))     |
-| start           | Function({ scene, camera, renderer, slot, elements, CSS }) | null                                                 | Function to be called once at scene creation.                                                                                                            |
-| update          | Function({ scene, camera, renderer, slot, elements, CSS }) | null                                                 | Function called once per frame.                                                                                                                          |
-| width           | Number                                                     | -1                                                   | Width of the canvas. -1 to take up full width of container.                                                                                              |
+| Name            | Type                                                                                     | Default                                              | Notes                                                                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| camera          | Object                                                                                   | `new THREE.PerspectiveCamera(75, 0.5625, 0.1, 1000)` | Main camera.                                                                                                                                             |
+| cameraType      | Object, Boolean, String                                                                  | `perspective`                                        | `perspective`, `orthographic`, or `ortho`. Creates the desired [camera](https://threejs.org/docs/index.html#api/en/cameras/Camera) as the scene default. |
+| fov             | Number, String                                                                           | `75`                                                 | Camera field of view.                                                                                                                                    |
+| height          | Number                                                                                   | -1                                                   | Height of the canvas. -1 to take up full height of container.                                                                                            |
+| rendererOptions | Object                                                                                   | {}                                                   | Object of [options](https://threejs.org/docs/#api/en/renderers/WebGLRenderer) to be passed directly to the WebGLRenderer.                                |
+| renderLoop      | Boolean                                                                                  | true                                                 | Whether or not to call `update` every frame.                                                                                                             |
+| renderType      | String                                                                                   | webgl                                                | `webgl` or `css`. Uses the [CSS3DRenderer](https://threejs.org/docs/#examples/renderers/CSS3DRenderer) if set to `css`. (See [below](#css-renderer))     |
+| start           | Function({ scene, camera, renderer, slot, elements, CSS, vertexShader, fragmentShader }) | null                                                 | Function to be called once at scene creation.                                                                                                            |
+| update          | Function({ scene, camera, renderer, slot, elements, CSS, vertexShader, fragmentShader }) | null                                                 | Function called once per frame.                                                                                                                          |
+| width           | Number                                                                                   | -1                                                   | Width of the canvas. -1 to take up full width of container.                                                                                              |
+
+### `start` and `update`
+
+`start` and `update` functions accept one object with the following parameters:
+
+```js
+{
+    // The THREE scene created by this VueThreeWrap
+    scene,
+        // The main camera
+        camera,
+        // The main renderer
+        renderer,
+        // The contents of the default slot
+        slot,
+        // An array of all valid elements in the default slot
+        elements,
+        // an object containing CSS renderer objects (see below)
+        CSS,
+        // the text of the first <script> tag in the default slot whose type is set to "shader/vertex"
+        vertexShader,
+        // the text of the first <script> tag in the default slot whose type is set to "shader/fragment"
+        fragmentShader
+}
+```
 
 ### CSS Renderer
 
