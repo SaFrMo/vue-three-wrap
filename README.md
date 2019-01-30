@@ -94,8 +94,10 @@ export default {
         // an object containing CSS renderer objects (see below)
         CSS,
         // the text of the first <script> tag in the default slot whose type is set to "shader/vertex"
+        // (defaults to a standard vertex shader if none exists - see src/utils/shader-defaults.js)
         vertexShader,
         // the text of the first <script> tag in the default slot whose type is set to "shader/fragment"
+        // (defaults to a pink fragment shader if none exists - see src/utils/shader-defaults.js)
         fragmentShader
 }
 ```

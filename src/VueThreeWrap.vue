@@ -17,6 +17,10 @@
 import rect from 'fh-components/mixins/rect'
 import * as THREE from 'three'
 import * as CSS from './css3d'
+import {
+    vertex as defaultVertex,
+    fragment as defaultFragment
+} from './utils/shader-defaults'
 
 export default {
     mixins: [rect],
@@ -200,12 +204,12 @@ export default {
         },
         getShaders() {
             const vert = this.$el.querySelector('script[type="shader/vertex"]')
-            const vertexShader = vert ? vert.textContent : null
+            const vertexShader = vert ? vert.textContent : defaultVertex
 
             const frag = this.$el.querySelector(
                 'script[type="shader/fragment"]'
             )
-            const fragmentShader = frag ? frag.textContent : null
+            const fragmentShader = frag ? frag.textContent : defaultFragment
 
             return { vertexShader, fragmentShader }
         }

@@ -1,5 +1,5 @@
 <template>
-    <main class="example" :style="cmpStyle">
+    <main class="example">
         <!-- Regular ol' spinning cube -->
         <vue-three-wrap :start="start1" :update="update1" />
 
@@ -183,21 +183,6 @@ export default {
         update4() {
             ref.pipe.material.uniforms.time.value = Date.now() - ref.mountTime
         }
-    },
-    computed: {
-        cmpStyle() {
-            let childCount = this.ready ? this.$el.childElementCount : 1
-
-            if (this.ready) {
-                while (childCount % 2) {
-                    childCount++
-                }
-            }
-
-            return {
-                '--exampleCount': childCount
-            }
-        }
     }
 }
 </script>
@@ -214,13 +199,13 @@ export default {
 
     display: grid;
     grid-template-columns: repeat(2, 50vw);
-    grid-template-rows: repeat(calc(var(--exampleCount) / 2), 50vh);
     grid-gap: 5px;
 
     & > div {
         background: white;
         position: relative;
         font-size: 0;
+        height: 50vh;
     }
 
     .css {
