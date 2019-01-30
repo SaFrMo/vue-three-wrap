@@ -1,5 +1,5 @@
 <template>
-    <main class="example" :style="{ '--exampleCount': $el.childElementCount }">
+    <main class="example" :style="cmpStyle">
         <!-- Regular ol' spinning cube -->
         <vue-three-wrap :start="start1" :update="update1" />
 
@@ -39,6 +39,7 @@ import Raycaster from '../src/extras/raycaster'
 import CustomSinCurve from './curve-setup'
 import ShaderExample from './ShaderExample'
 import FragmentShader from './FragmentShader'
+import Vue from 'vue'
 
 const ref = {}
 let cssRef = {}
@@ -58,6 +59,16 @@ export default {
         'vue-three-wrap': VueThree,
         'shader-example': ShaderExample,
         'fragment-shader': FragmentShader
+    },
+    data() {
+        return {
+            ready: false
+        }
+    },
+    async mounted() {
+        await Vue.nextTick()
+
+        this.ready = true
     },
     methods: {
         // top left
@@ -172,6 +183,21 @@ export default {
         update4() {
             ref.pipe.material.uniforms.time.value = Date.now() - ref.mountTime
         }
+    },
+    computed: {
+        cmpStyle() {
+            let childCount = this.ready ? this.$el.childElementCount : 1
+
+            if (this.ready) {
+                while (childCount % 2) {
+                    childCount++
+                }
+            }
+
+            return {
+                '--exampleCount': childCount
+            }
+        }
     }
 }
 </script>
@@ -183,12 +209,12 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
-    bottom: 0;
+    min-height: 100vh;
     left: 0;
 
     display: grid;
     grid-template-columns: repeat(2, 50vw);
-    grid-template-rows: repeat(calc(var(--exampleCount) / 2), 50%);
+    grid-template-rows: repeat(calc(var(--exampleCount) / 2), 50vh);
     grid-gap: 5px;
 
     & > div {
