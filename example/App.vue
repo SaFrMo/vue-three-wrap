@@ -1,5 +1,5 @@
 <template>
-    <main class="example">
+    <main class="example" :style="{ '--exampleCount': $el.childElementCount }">
         <!-- Regular ol' spinning cube -->
         <vue-three-wrap :start="start1" :update="update1" />
 
@@ -23,8 +23,11 @@
             ref="ortho"
         />
 
-        <!-- Shader example -->
+        <!-- Vertex shader example -->
         <shader-example :start="start4" :update="update4" />
+
+        <!-- Fragment shader example -->
+        <fragment-shader />
     </main>
 </template>
 
@@ -35,6 +38,7 @@ import * as THREE from 'three'
 import Raycaster from '../src/extras/raycaster'
 import CustomSinCurve from './curve-setup'
 import ShaderExample from './ShaderExample'
+import FragmentShader from './FragmentShader'
 
 const ref = {}
 let cssRef = {}
@@ -52,7 +56,8 @@ const addLight = scene => {
 export default {
     components: {
         'vue-three-wrap': VueThree,
-        'shader-example': ShaderExample
+        'shader-example': ShaderExample,
+        'fragment-shader': FragmentShader
     },
     methods: {
         // top left
@@ -173,7 +178,7 @@ export default {
 
 <style lang="scss">
 .example {
-    overflow: hidden;
+    overflow-x: hidden;
     background: #c44;
     position: absolute;
     top: 0;
@@ -182,12 +187,14 @@ export default {
     left: 0;
 
     display: grid;
-    grid-template: repeat(2, 50%) / repeat(2, 50%);
+    grid-template-columns: repeat(2, 50vw);
+    grid-template-rows: repeat(calc(var(--exampleCount) / 2), 50%);
     grid-gap: 5px;
 
     & > div {
         background: white;
         position: relative;
+        font-size: 0;
     }
 
     .css {
