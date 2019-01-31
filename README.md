@@ -8,6 +8,7 @@ See examples [here](https://three-examples.netlify.com/) ([source](https://githu
     1. [Props](#props)
     1. [`start` and `update`](#start-and-update)
     1. [CSS Renderer](#css-renderer)
+    1. [Shader Injection](#shader-injection)
 1. [Extras](#mixins)
     1. [Raycaster](#raycaster)
 
@@ -68,6 +69,7 @@ export default {
 | cameraType      | Object, Boolean, String                                                                  | `perspective`                                        | `perspective`, `orthographic`, or `ortho`. Creates the desired [camera](https://threejs.org/docs/index.html#api/en/cameras/Camera) as the scene default. |
 | fov             | Number, String                                                                           | `75`                                                 | Camera field of view.                                                                                                                                    |
 | height          | Number                                                                                   | -1                                                   | Height of the canvas. -1 to take up full height of container.                                                                                            |
+| injectShaders   | Boolean                                                                                  | `false`                                              | Whether or not to inject custom shaders. See [below](#shader-injection).                                                                                 |
 | rendererOptions | Object                                                                                   | {}                                                   | Object of [options](https://threejs.org/docs/#api/en/renderers/WebGLRenderer) to be passed directly to the WebGLRenderer.                                |
 | renderLoop      | Boolean                                                                                  | true                                                 | Whether or not to call `update` every frame.                                                                                                             |
 | renderType      | String                                                                                   | webgl                                                | `webgl` or `css`. Uses the [CSS3DRenderer](https://threejs.org/docs/#examples/renderers/CSS3DRenderer) if set to `css`. (See [below](#css-renderer))     |
@@ -153,6 +155,36 @@ To do so:
 1. Create new CSS3DObjects using the `CSS` property passed to the `start` and `update` functions.
 
 Otherwise, it's just like working with a normal THREE.js scene, just with usable DOM objects.
+
+### Shader Injection
+
+Set the `inject-shaders` prop to `true` to inject some common [noise functions](https://github.com/ashima/webgl-noise). You can use THREE's `#include` convention. All return a value of -1 to 1.
+
+-   `float snoise(vec2)` - 2D simplex noise.
+-   `float cnoise(vec2)` - 2D Perlin noise.
+
+An example fragment shader using 2D simplex noise:
+
+```html
+<vue-three-wrap :inject-shaders="true">
+    <script type="shader/fragment">
+        #include <snoise>
+
+        varying vec2 vUv;
+        uniform float time;
+
+        void main() {
+            // increase the viewing area (* 3)
+            // scale from -1 -> 1 to 0 -> 2 (+ 1)
+            // scale from 0 -> 2 to 0 -> 1 (/ 2)
+            float noise = (snoise((vUv + time) * 3.) + 1.) / 2.;
+            vec4 dark = vec4(0., 0., 0., 1.);
+            vec4 light = vec4(1.);
+            gl_FragColor = mix(dark, light, noise);
+        }
+    </script>
+</vue-three-wrap>
+```
 
 ## Extras
 
