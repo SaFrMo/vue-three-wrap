@@ -21,6 +21,9 @@ import {
     vertex as defaultVertex,
     fragment as defaultFragment
 } from './utils/shader-defaults'
+import chunks from './shader-chunks'
+
+const shaderChunkKeys = Object.keys(chunks)
 
 export default {
     mixins: [rect],
@@ -40,6 +43,10 @@ export default {
         height: {
             type: Number,
             default: -1
+        },
+        injectShaders: {
+            type: Boolean,
+            default: false
         },
         rendererOptions: {
             type: Object,
@@ -69,7 +76,9 @@ export default {
     data() {
         return {
             three: {},
-            running: true
+            running: true,
+            finalVertexShader: '',
+            finalFragmentShader: ''
         }
     },
     mounted() {
@@ -131,7 +140,7 @@ export default {
                 elements: this.$slots.default
                     ? this.$slots.default.map(v => v.elm).filter(e => e.style)
                     : [],
-                ...this.getShaders()
+                ...this.getShaders(true)
             })
         }
 
@@ -196,20 +205,38 @@ export default {
                               .map(v => v.elm)
                               .filter(e => e.style)
                         : [],
-                    ...this.getShaders()
+                    vertexShader: this.finalVertexShader,
+                    fragmentShader: this.finalFragmentShader
                 })
             }
 
             this.three.renderer.render(this.three.scene, this.three.camera)
         },
-        getShaders() {
+        getShaders(inject = false) {
             const vert = this.$el.querySelector('script[type="shader/vertex"]')
-            const vertexShader = vert ? vert.textContent : defaultVertex
+            let vertexShader = vert ? vert.textContent : defaultVertex
 
             const frag = this.$el.querySelector(
                 'script[type="shader/fragment"]'
             )
-            const fragmentShader = frag ? frag.textContent : defaultFragment
+            let fragmentShader = frag ? frag.textContent : defaultFragment
+
+            // inject desired shaders
+            if (inject && this.injectShaders) {
+                shaderChunkKeys.forEach(key => {
+                    vertexShader = vertexShader.replace(
+                        `#include <${key}>`,
+                        chunks[key]
+                    )
+                    fragmentShader = fragmentShader.replace(
+                        `#include <${key}>`,
+                        chunks[key]
+                    )
+                })
+            }
+
+            this.finalVertexShader = vertexShader
+            this.finalFragmentShader = fragmentShader
 
             return { vertexShader, fragmentShader }
         }
