@@ -3,6 +3,7 @@
         class="post-processing-example"
         :custom-renderer="composer"
         :start="start"
+        :update="update"
     />
 </template>
 
@@ -39,7 +40,12 @@ export default {
             this.composer.addPass(new RenderPass(scene, camera))
             const effect = new ShaderPass(DotScreenShader)
             effect.uniforms.scale.value = 4
+            effect.renderToScreen = true
             this.composer.addPass(effect)
+        },
+        update() {
+            ref.box.rotation.x += 0.002
+            ref.box.rotation.y -= 0.005
         }
     }
 }

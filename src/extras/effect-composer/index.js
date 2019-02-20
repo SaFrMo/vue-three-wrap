@@ -67,9 +67,9 @@ export default class {
 
         this._previousFrameTime = Date.now()
 
-        var maskActive = false
+        let maskActive = false
 
-        var pass,
+        let pass,
             i,
             il = this.passes.length
 
