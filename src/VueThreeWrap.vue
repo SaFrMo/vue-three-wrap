@@ -36,6 +36,10 @@ export default {
             type: [Object, Boolean, String],
             default: 'perspective'
         },
+        customRenderer: {
+            type: Object,
+            default: null
+        },
         fov: {
             type: [Number, String],
             default: 75
@@ -144,6 +148,13 @@ export default {
             })
         }
 
+        // warn re: custom renderer if not set up correctly
+        if (this.customRenderer && !this.customRenderer.render) {
+            console.warn(
+                'custom-renderer must be an object with a `render` function. Using default renderer.'
+            )
+        }
+
         // kick animation
         this.render()
     },
@@ -186,6 +197,16 @@ export default {
 
             this.three.camera.updateProjectionMatrix()
             this.three.renderer.setSize(this.cmpWidth, this.cmpHeight)
+
+            if (this.customRenderer) {
+                if (!this.customRenderer.setSize) {
+                    console.log(
+                        'Custom renderer missing a `setSize` function. Not resizing custom renderer.'
+                    )
+                } else {
+                    this.customRenderer.setSize(this.cmpWidth, this.cmpHeight)
+                }
+            }
         },
         render() {
             if (!this.running) return
@@ -210,7 +231,11 @@ export default {
                 })
             }
 
-            this.three.renderer.render(this.three.scene, this.three.camera)
+            if (this.customRenderer) {
+                this.customRenderer.render()
+            } else {
+                this.three.renderer.render(this.three.scene, this.three.camera)
+            }
         },
         getShaders(inject = false) {
             const vert = this.$el.querySelector('script[type="shader/vertex"]')
