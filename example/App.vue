@@ -28,6 +28,9 @@
 
         <!-- Fragment shader example -->
         <fragment-shader />
+
+        <!-- Post shader example -->
+        <post-processing-example />
     </main>
 </template>
 
@@ -39,6 +42,7 @@ import Raycaster from '../src/extras/raycaster'
 import CustomSinCurve from './curve-setup'
 import ShaderExample from './ShaderExample'
 import FragmentShader from './FragmentShader'
+import PostProcessingExample from './PostProcessingExample'
 import Vue from 'vue'
 
 const ref = {}
@@ -58,7 +62,8 @@ export default {
     components: {
         'vue-three-wrap': VueThree,
         'shader-example': ShaderExample,
-        'fragment-shader': FragmentShader
+        'fragment-shader': FragmentShader,
+        'post-processing-example': PostProcessingExample
     },
     data() {
         return {
