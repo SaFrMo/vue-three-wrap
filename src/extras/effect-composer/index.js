@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import CopyShader from '../shaders/CopyShader'
+import CopyShader from './CopyShader'
 import ShaderPass from './ShaderPass'
 
 /**
