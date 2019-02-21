@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import CopyShader from './CopyShader'
 import ShaderPass from './ShaderPass'
+import _get from 'lodash/get'
 
 /**
  * @author alteredq / http://alteredqualia.com/
@@ -138,6 +139,18 @@ export default class {
 
         for (var i = 0; i < this.passes.length; i++) {
             this.passes[i].setSize(width, height)
+        }
+    }
+
+    getUniforms(passIndex) {
+        return _get(this, `passes[${passIndex}].uniforms`, null)
+    }
+
+    setUniforms(passIndex, uniform, val) {
+        try {
+            this.passes[passIndex].uniforms[uniform].value = val
+        } catch (err) {
+            console.log(err)
         }
     }
 }

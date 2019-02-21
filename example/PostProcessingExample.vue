@@ -10,9 +10,7 @@
 <script>
 import * as THREE from 'three'
 import VueThreeWrap from '../src/VueThreeWrap'
-import EffectComposer from '../src/extras/effect-composer'
-import RenderPass from '../src/extras/effect-composer/RenderPass'
-import ShaderPass from '../src/extras/effect-composer/ShaderPass'
+import QuickComposer from '../src/extras/quick-composer'
 import DotScreenShader from '../src/extras/shaders/DotScreenShader'
 import RGBShiftShader from '../src/extras/shaders/RGBShiftShader'
 
@@ -31,29 +29,31 @@ export default {
         start({ scene, camera, renderer }) {
             camera.position.z = 10
 
+            // add cube
             const geo = new THREE.BoxGeometry()
             const mat = new THREE.MeshLambertMaterial({ color: 0xffcccc })
             ref.box = new THREE.Mesh(geo, mat)
+            scene.add(ref.box)
 
+            // add sun
             const sun = new THREE.DirectionalLight()
             sun.position.set(5, 5, 5)
             scene.add(sun)
 
-            scene.add(ref.box)
-
             // build composer
-            this.composer = new EffectComposer(renderer)
-            this.composer.addPass(new RenderPass(scene, camera))
+            const dots = DotScreenShader
+            // dots.uniforms.scale.value = 4
+            dots.scale = this.composer = QuickComposer({
+                scene,
+                camera,
+                renderer,
+                passes: [dots, RGBShiftShader]
+            })
+
+            this.composer.setUniforms(1, 'scale', 4)
 
             // dots
-            const dots = new ShaderPass(DotScreenShader)
-            dots.uniforms.scale.value = 4
-            this.composer.addPass(dots)
-
-            // rgb shift
-            const rgb = new ShaderPass(RGBShiftShader)
-            rgb.renderToScreen = true
-            this.composer.addPass(rgb)
+            // dots.uniforms.scale.value = 4
         },
         update() {
             ref.box.rotation.x += 0.002
