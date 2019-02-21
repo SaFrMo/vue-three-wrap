@@ -8,6 +8,7 @@ export default ({ scene, camera, renderer, passes }) => {
     // add initial render pass
     output.addPass(new RenderPass(scene, camera))
 
+    // TODO: duck-typing for shaders to smartly add passes
     if (passes && Array.isArray(passes)) {
         passes.forEach(shader => {
             output.addPass(new ShaderPass(shader))

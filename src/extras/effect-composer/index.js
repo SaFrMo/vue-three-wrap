@@ -146,11 +146,15 @@ export default class {
         return _get(this, `passes[${passIndex}].uniforms`, null)
     }
 
-    setUniforms(passIndex, uniform, val) {
+    setUniform(passIndex, uniform, val) {
         try {
             this.passes[passIndex].uniforms[uniform].value = val
         } catch (err) {
             console.log(err)
         }
+    }
+
+    getPass(index) {
+        return this.passes[index]
     }
 }

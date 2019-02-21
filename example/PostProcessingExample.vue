@@ -11,8 +11,8 @@
 import * as THREE from 'three'
 import VueThreeWrap from '../src/VueThreeWrap'
 import QuickComposer from '../src/extras/quick-composer'
-import DotScreenShader from '../src/extras/shaders/DotScreenShader'
-import RGBShiftShader from '../src/extras/shaders/RGBShiftShader'
+import DotScreenShader from '../src/shaders/DotScreenShader'
+import RGBShiftShader from '../src/shaders/RGBShiftShader'
 
 const ref = {}
 
@@ -27,6 +27,7 @@ export default {
     },
     methods: {
         start({ scene, camera, renderer }) {
+            // position camera
             camera.position.z = 10
 
             // add cube
@@ -41,24 +42,25 @@ export default {
             scene.add(sun)
 
             // build composer
-            const dots = DotScreenShader
-            // dots.uniforms.scale.value = 4
-            dots.scale = this.composer = QuickComposer({
+            this.composer = QuickComposer({
                 scene,
                 camera,
                 renderer,
-                passes: [dots, RGBShiftShader]
+                passes: [DotScreenShader, RGBShiftShader]
             })
 
-            this.composer.setUniforms(1, 'scale', 4)
-
-            // dots
-            // dots.uniforms.scale.value = 4
+            // Set a uniform of a pass
+            // Note that passes are 1-indexed when using QuickComposer
+            this.composer.getPass(1).uniforms.scale.value = 4
+            // A quicker way to do the same thing:
+            this.composer.setUniform(1, 'scale', 4)
         },
         update() {
+            // rotate the box
             ref.box.rotation.x += 0.002
             ref.box.rotation.y -= 0.005
 
+            // move the box in a circle
             const d = Date.now() * 0.0015
             ref.box.position.set(Math.sin(d) * 2, Math.cos(d) * 2, 0)
         }
