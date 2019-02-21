@@ -290,9 +290,6 @@ import RGBShiftShader from 'vue-three-wrap/shaders/RGBShiftShader'
 const ref = {}
 
 export default {
-    components: {
-        'vue-three-wrap': VueThreeWrap
-    },
     data() {
         return {
             composer: null
@@ -341,3 +338,49 @@ export default {
 }
 </script>
 ```
+
+To use:
+
+1. Import `QuickComposer` from `vue-three-wrap/extras/quick-composer`.
+    1. If you want more control of your composer, you can also import `EffectComposer` from `vue-three-wrap/extras/effect-composer`.
+1. Set the `custom-renderer` prop in `vue-three-wrap` to an instance of the QuickComposer.
+1. Instantiate the QuickComposer with the following options as an object:
+
+    ```
+    {
+        // these three can just be passed from your start/update functions
+        scene,
+        camera,
+        renderer,
+
+        // an array of shader objects (see below)
+        passes: []
+    }
+    ```
+
+**TODO**: document EffectComposer and QuickComposer
+
+#### Post Shaders
+
+`vue-three-wrap` comes with some complete shaders in the form of JS objects:
+
+-   `DotScreenShader`
+-   `RGBShiftShader`
+
+You can import any existing shader from `vue-three-wrap/shaders/YourDesiredShader`.
+
+You can also create your own by making an object with `uniforms`, `vertexShader`, and `fragmentShader` properties:
+
+```
+// ExampleShader.js
+export default {
+    uniforms: {
+        // Each uniform ust be an object with a `value` property
+        yourUniform: { value: 0}
+    },
+    vertexShader: 'A string containing your WebGL vertex shader',
+    fragmentShader: 'A string containing your WebGL fragment shader'
+}
+```
+
+You can then use this shader as a pass in the QuickComposer or EffectComposer. Writing shaders is beyond the scope of this readme - take a look at [The Book of Shaders](https://thebookofshaders.com/) for more information.
