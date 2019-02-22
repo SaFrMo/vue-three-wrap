@@ -11,8 +11,8 @@
 import * as THREE from 'three'
 import VueThreeWrap from '../src/VueThreeWrap'
 import buildComposer from '../src/extras/quick-composer'
-import DotScreenShader from '../src/shaders/DotScreenShader'
-import RGBShiftShader from '../src/shaders/RGBShiftShader'
+// import DotScreenShader from '../src/shaders/DotScreenShader'
+// import RGBShiftShader from '../src/shaders/RGBShiftShader'
 
 const ref = {}
 
@@ -46,14 +46,26 @@ export default {
                 scene,
                 camera,
                 renderer,
-                passes: ['bloom']
+                passes: [
+                    {
+                        // will be CapitalCamelCased and have 'Effect' added
+                        // so this will be 'PixelationEffect'
+                        type: 'pixelation',
+                        // passed directly to the constructor of this effect
+                        options: 3,
+                        // when created
+                        created: pass => {
+                            // can manipulate this pass once created - example:
+                            // pass.setGranularity(20)
+                            // save a reference to this pass
+                            ref.pixelate = pass
+                        }
+                    },
+                    // can also pass a string for default values
+                    // for example, for BloomEffect:
+                    'bloom'
+                ]
             })
-
-            // Set a uniform of a pass
-            // Note that passes are 1-indexed when using QuickComposer
-            // this.composer.getPass(1).uniforms.scale.value = 4
-            // A quicker way to do the same thing:
-            // this.composer.setUniform(1, 'scale', 4)
         },
         update() {
             // rotate the box
@@ -63,6 +75,10 @@ export default {
             // move the box in a circle
             const d = Date.now() * 0.0015
             ref.box.position.set(Math.sin(d) * 2, Math.cos(d) * 2, 0)
+
+            ref.pixelate.setGranularity(
+                Math.abs(Math.sin(Date.now() / 1000) * 10)
+            )
         }
     }
 }

@@ -1,49 +1,63 @@
-import {
-    EffectComposer,
-    RenderPass,
-    EffectPass,
-    ShaderPass
-} from 'postprocessing'
 import _camelCase from 'lodash/camelCase'
 import * as Post from 'postprocessing'
 
-const fixCase = input => {
+// camelcase with first letter capitalized
+const capitalCamel = input => {
     const cased = _camelCase(input)
     return cased.charAt(0).toUpperCase() + cased.slice(1)
 }
 
+const buildEffectPass = ({ type, options }) => {
+    // add an effect pass using postprocessing's special EffectPass
+    // first, case the name - example:
+    // 'bloom' becomes 'BloomEffect'
+    // 'god-rays' becomes 'GodRaysEffect'
+    const propName = capitalCamel(type).replace('Effect', '') + 'Effect'
+    // if Post has an effect of that name...
+    if (Post[propName]) {
+        // create and return the pass
+        return new Post[propName](options)
+    } else {
+        // ...otherwise, log an error and don't add anything
+        // eslint-disable-next-line
+        console.log("postprocessing couldn't find an effect called " + propName)
+        return false
+    }
+}
+
 export default ({ scene, camera, renderer, passes }) => {
-    const output = new Post.EffectComposer(renderer)
+    const composer = new Post.EffectComposer(renderer)
 
     // add initial render pass
-    output.addPass(new Post.RenderPass(scene, camera))
+    composer.addPass(new Post.RenderPass(scene, camera))
+
+    // prep effect queue
+    const effectQueue = []
 
     if (passes && Array.isArray(passes)) {
         passes.forEach(pass => {
-            // add a shader pass
             if (pass.uniforms && pass.vertexShader && pass.fragmentShader) {
-                output.addPass(new Post.ShaderPass(pass))
+                // add a shader pass
+                composer.addPass(new Post.ShaderPass(pass))
             } else if (typeof pass === 'string') {
-                const propName = fixCase(pass).replace('Effect', '') + 'Effect'
-                if (!Post[propName]) {
-                    console.log(
-                        "postprocessing couldn't find an effect called " +
-                            propName
-                    )
-                } else {
-                    output.addPass(
-                        new Post.EffectPass(camera, new Post[`${propName}`]())
-                    )
+                effectQueue.push(buildEffectPass({ type: pass }, composer))
+            } else if (pass.type && pass.options) {
+                let eff = buildEffectPass(pass, composer)
+                if (pass.created) {
+                    pass.created(eff)
                 }
+                effectQueue.push(eff)
             }
             // add a raw Pass derivative
             else {
-                output.addPass(pass)
+                composer.addPass(pass)
             }
         })
     }
 
-    output.passes[output.passes.length - 1].renderToScreen = true
+    composer.addPass(new Post.EffectPass(camera, ...effectQueue))
 
-    return output
+    composer.passes[composer.passes.length - 1].renderToScreen = true
+
+    return composer
 }
