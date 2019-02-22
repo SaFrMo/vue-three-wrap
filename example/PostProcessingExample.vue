@@ -10,7 +10,7 @@
 <script>
 import * as THREE from 'three'
 import VueThreeWrap from '../src/VueThreeWrap'
-import QuickComposer from '../src/extras/quick-composer'
+import buildComposer from '../src/extras/quick-composer'
 import DotScreenShader from '../src/shaders/DotScreenShader'
 import RGBShiftShader from '../src/shaders/RGBShiftShader'
 
@@ -42,18 +42,18 @@ export default {
             scene.add(sun)
 
             // build composer
-            this.composer = QuickComposer({
+            this.composer = buildComposer({
                 scene,
                 camera,
                 renderer,
-                passes: [DotScreenShader, RGBShiftShader]
+                passes: ['bloom']
             })
 
             // Set a uniform of a pass
             // Note that passes are 1-indexed when using QuickComposer
-            this.composer.getPass(1).uniforms.scale.value = 4
+            // this.composer.getPass(1).uniforms.scale.value = 4
             // A quicker way to do the same thing:
-            this.composer.setUniform(1, 'scale', 4)
+            // this.composer.setUniform(1, 'scale', 4)
         },
         update() {
             // rotate the box

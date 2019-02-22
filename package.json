@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "fh-components": "^1.4.15",
+        "postprocessing": "^5.6.0",
         "three-renderer-css3d": "^1.0.0"
     },
     "repository": {
