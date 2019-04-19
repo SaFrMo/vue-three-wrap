@@ -49,14 +49,13 @@ export default {
             const geometry = new THREE.BoxGeometry()
             const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
             ref.cube = new THREE.Mesh(geometry, material)
-            ref.cube.position.z = 10
+            ref.cube.position.z = -4
 
             scene.add(ref.cube)
-
         },
         // called once per frame
         update({ scene, camera, renderer }) {
-
+            ref.cube.rotation.y -= 0.01
         }
     }
 }
