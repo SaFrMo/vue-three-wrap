@@ -14,7 +14,7 @@ export const loadObjects = path => {
             gltf => {
                 res(
                     gltf && gltf.scene && gltf.scene.children
-                        ? gltf.scene.children
+                        ? Array.from(gltf.scene.children)
                         : null
                 )
             },
