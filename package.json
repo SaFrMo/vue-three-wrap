@@ -4,7 +4,7 @@
     "description": "Vue component wrapping a THREE.js instance.",
     "main": "./dist/vue-three-wrap.common.js",
     "scripts": {
-        "dev": "vue serve ./example/App.vue",
+        "dev": "cd example && vue serve",
         "buildExtras": "npx babel src/extras --out-dir extras --presets=@babel/preset-env",
         "buildComponent": "vue build --target lib --name vue-three-wrap ./src/VueThreeWrap.vue",
         "build": "npm run buildExtras && npm run buildComponent",
