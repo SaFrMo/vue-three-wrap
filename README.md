@@ -13,6 +13,7 @@ See examples [here](https://three-examples.netlify.com/) ([source](https://githu
     1. [Raycaster](#raycaster)
     1. [Postprocessing](#postprocessing)
         1. [Post Shaders](#post-shaders)
+    1. [Object Loader](#object-loader)
 
 ## Main
 
@@ -31,34 +32,35 @@ Then:
 </template>
 
 <script>
-import VueThreeWrap from 'vue-three-wrap'
-import * as THREE from 'three'
+    import VueThreeWrap from 'vue-three-wrap'
+    import * as THREE from 'three'
 
-// can be handy to store THREE objects in an unwatched object
-const ref = {}
+    // can be handy to store THREE objects in an unwatched object
+    const ref = {}
 
-export default {
-    components: {
-        'vue-three-wrap': VueThreeWrap
-    },
-    methods: {
-        // called once when the scene is created
-        start({ scene, camera, renderer }) {
-
-            // example - add a cube to the scene
-            const geometry = new THREE.BoxGeometry()
-            const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-            ref.cube = new THREE.Mesh(geometry, material)
-            ref.cube.position.z = -4
-
-            scene.add(ref.cube)
+    export default {
+        components: {
+            'vue-three-wrap': VueThreeWrap
         },
-        // called once per frame
-        update({ scene, camera, renderer }) {
-            ref.cube.rotation.y -= 0.01
+        methods: {
+            // called once when the scene is created
+            start({ scene, camera, renderer }) {
+                // example - add a cube to the scene
+                const geometry = new THREE.BoxGeometry()
+                const material = new THREE.MeshBasicMaterial({
+                    color: 0xff0000
+                })
+                ref.cube = new THREE.Mesh(geometry, material)
+                ref.cube.position.z = -4
+
+                scene.add(ref.cube)
+            },
+            // called once per frame
+            update({ scene, camera, renderer }) {
+                ref.cube.rotation.y -= 0.01
+            }
         }
     }
-}
 </script>
 ```
 
@@ -197,33 +199,35 @@ Example:
 
 ```html
 <template>
-    <vue-three-wrap ref="threeWrap" :start="start" :update="update"/>
+    <vue-three-wrap ref="threeWrap" :start="start" :update="update" />
 </template>
 
 <script>
-import Raycaster from 'vue-three-wrap/extras/raycaster'
+    import Raycaster from 'vue-three-wrap/extras/raycaster'
 
-const ref = {}
+    const ref = {}
 
-export default {
-    methods: {
-        start({camera}){
-            ref.raycaster = new Raycaster({
-                el: this.$refs.threeWrap.$el,
-                camera: camera
-            })
+    export default {
+        methods: {
+            start({ camera }) {
+                ref.raycaster = new Raycaster({
+                    el: this.$refs.threeWrap.$el,
+                    camera: camera
+                })
 
-            // (add your scene objects here)
-        },
-        update({scene}){
-            // cast against all objects in the scene
-            const intersects = ref.raycaster.intersectObjects(scene.children)
-            // get objects from intersections
-            const intersectedObjects = intersects.map(i => i.object)
-            console.log(intersects, intersectedObjects)
+                // (add your scene objects here)
+            },
+            update({ scene }) {
+                // cast against all objects in the scene
+                const intersects = ref.raycaster.intersectObjects(
+                    scene.children
+                )
+                // get objects from intersections
+                const intersectedObjects = intersects.map(i => i.object)
+                console.log(intersects, intersectedObjects)
+            }
         }
     }
-}
 </script>
 ```
 
@@ -281,60 +285,60 @@ You can use the postprocessor from the [examples](https://threejs.org/examples/?
 </template>
 
 <script>
-import * as THREE from 'three'
-import QuickComposer from 'vue-three-wrap/extras/quick-composer'
-import DotScreenShader from 'vue-three-wrap/shaders/DotScreenShader'
-import RGBShiftShader from 'vue-three-wrap/shaders/RGBShiftShader'
+    import * as THREE from 'three'
+    import QuickComposer from 'vue-three-wrap/extras/quick-composer'
+    import DotScreenShader from 'vue-three-wrap/shaders/DotScreenShader'
+    import RGBShiftShader from 'vue-three-wrap/shaders/RGBShiftShader'
 
-const ref = {}
+    const ref = {}
 
-export default {
-    data() {
-        return {
-            composer: null
-        }
-    },
-    methods: {
-        start({ scene, camera, renderer }) {
-            // position camera
-            camera.position.z = 10
-
-            // add cube
-            const geo = new THREE.BoxGeometry()
-            const mat = new THREE.MeshLambertMaterial({ color: 0xffcccc })
-            ref.box = new THREE.Mesh(geo, mat)
-            scene.add(ref.box)
-
-            // add sun
-            const sun = new THREE.DirectionalLight()
-            sun.position.set(5, 5, 5)
-            scene.add(sun)
-
-            // build composer
-            this.composer = QuickComposer({
-                scene,
-                camera,
-                renderer,
-                passes: [DotScreenShader, RGBShiftShader]
-            })
-
-            // Set a uniform of a pass
-            // Note that passes are 1-indexed when using QuickComposer
-            this.composer.getPass(1).uniforms.scale.value = 4
-            // A quicker way to do the same thing:
-            this.composer.setUniform(1, 'scale', 4)
+    export default {
+        data() {
+            return {
+                composer: null
+            }
         },
-        update() {
-            // rotate the box
-            ref.box.rotation.x += 0.002
-            ref.box.rotation.y -= 0.005
+        methods: {
+            start({ scene, camera, renderer }) {
+                // position camera
+                camera.position.z = 10
 
-            // move the box in a circle
-            const d = Date.now() * 0.0015
-            ref.box.position.set(Math.sin(d) * 2, Math.cos(d) * 2, 0)
+                // add cube
+                const geo = new THREE.BoxGeometry()
+                const mat = new THREE.MeshLambertMaterial({ color: 0xffcccc })
+                ref.box = new THREE.Mesh(geo, mat)
+                scene.add(ref.box)
+
+                // add sun
+                const sun = new THREE.DirectionalLight()
+                sun.position.set(5, 5, 5)
+                scene.add(sun)
+
+                // build composer
+                this.composer = QuickComposer({
+                    scene,
+                    camera,
+                    renderer,
+                    passes: [DotScreenShader, RGBShiftShader]
+                })
+
+                // Set a uniform of a pass
+                // Note that passes are 1-indexed when using QuickComposer
+                this.composer.getPass(1).uniforms.scale.value = 4
+                // A quicker way to do the same thing:
+                this.composer.setUniform(1, 'scale', 4)
+            },
+            update() {
+                // rotate the box
+                ref.box.rotation.x += 0.002
+                ref.box.rotation.y -= 0.005
+
+                // move the box in a circle
+                const d = Date.now() * 0.0015
+                ref.box.position.set(Math.sin(d) * 2, Math.cos(d) * 2, 0)
+            }
         }
     }
-}
 </script>
 ```
 
@@ -383,3 +387,40 @@ export default {
 ```
 
 You can then use this shader as a pass in the QuickComposer or EffectComposer. Writing shaders is beyond the scope of this readme - take a look at [The Book of Shaders](https://thebookofshaders.com/) for more information.
+
+### Object Loader
+
+You can import `.gltf` and `.glb` files, [the format that Three prefers](https://threejs.org/docs/#manual/en/introduction/Loading-3D-models), using the `load-gltf` extra.
+
+```html
+<template>
+    <vue-three-wrap class="object-loader" :start="start" />
+</template>
+
+<script>
+    // to use the loadObjects module:
+    import { loadObjects } from 'vue-three-wrap/extras/load-gltf/'
+    // to use the default full scene loader:
+    import loadScene from 'vue-three-wrap/extras/load-gltf'
+
+    export default {
+        methods: {
+            async start({ scene, camera, vertexShader, fragmentShader }) {
+                // you can load a full scene...
+                // const glb = await loadScene('/assets/scene.glb')
+                // scene.add(glb.scene)
+
+                // ...or individual objects
+                const objects = await loadObjects('/assets/scene.glb')
+                objects.forEach(obj => scene.add(obj))
+
+                // remember to add some lighting
+
+                // place and rotate the camera
+                camera.position.set(-4, 4, 4)
+                camera.lookAt(new THREE.Vector3(0, 0, 0))
+            }
+        }
+    }
+</script>
+```
