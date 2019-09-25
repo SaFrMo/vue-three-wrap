@@ -31,6 +31,9 @@
 
         <!-- Post shader example -->
         <post-processing-example />
+
+        <!-- Object loader -->
+        <object-loader-example />
     </main>
 </template>
 
@@ -43,6 +46,7 @@ import CustomSinCurve from './curve-setup'
 import ShaderExample from './ShaderExample'
 import FragmentShader from './FragmentShader'
 import PostProcessingExample from './PostProcessingExample'
+import ObjectLoaderExample from './ObjectLoaderExample'
 import Vue from 'vue'
 
 const ref = {}
@@ -63,7 +67,8 @@ export default {
         'vue-three-wrap': VueThree,
         'shader-example': ShaderExample,
         'fragment-shader': FragmentShader,
-        'post-processing-example': PostProcessingExample
+        'post-processing-example': PostProcessingExample,
+        'object-loader-example': ObjectLoaderExample
     },
     data() {
         return {
@@ -211,6 +216,10 @@ export default {
         position: relative;
         font-size: 0;
         height: 50vh;
+
+        &:last-child:nth-child(odd) {
+            grid-column: span 2;
+        }
     }
 
     .css {
