@@ -1,6 +1,6 @@
 {
     "name": "vue-three-wrap",
-    "version": "3.2.41",
+    "version": "3.3.00",
     "description": "Vue component wrapping a THREE.js instance.",
     "main": "./dist/vue-three-wrap.common.js",
     "scripts": {
@@ -22,11 +22,11 @@
         "@babel/preset-env": "^7.3.1",
         "@vue/cli": "^3.2.1",
         "node-sass": "^4.11.0",
-        "sass-loader": "^7.1.0",
-        "three": "^0.99.0"
+        "sass-loader": "^7.1.0"
     },
     "dependencies": {
         "fh-components": "^1.4.15",
+        "three": "0.111.0",
         "three-renderer-css3d": "^1.0.0"
     },
     "repository": {

@@ -39,10 +39,11 @@ export default class extends Pass {
 
         this.quad.material = this.material
 
-        if (this.renderToScreen) {
-            renderer.render(this.scene, this.camera)
-        } else {
-            renderer.render(this.scene, this.camera, writeBuffer, this.clear)
+        renderer.setRenderTarget(this.renderToScreen ? null : writeBuffer)
+
+        if (this.clear) {
+            renderer.clear()
         }
+        renderer.render(this.scene, this.camera)
     }
 }

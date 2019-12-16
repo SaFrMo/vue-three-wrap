@@ -19,7 +19,7 @@ export default class {
                 stencilBuffer: false
             }
 
-            var size = renderer.getDrawingBufferSize()
+            var size = renderer.getDrawingBufferSize(new THREE.Vector2())
             renderTarget = new THREE.WebGLRenderTarget(
                 size.width,
                 size.height,
@@ -51,7 +51,7 @@ export default class {
     addPass(pass) {
         this.passes.push(pass)
 
-        const size = this.renderer.getDrawingBufferSize()
+        const size = this.renderer.getDrawingBufferSize(new THREE.Vector2())
         pass.setSize(size.width, size.height)
     }
 
@@ -118,7 +118,7 @@ export default class {
 
     reset(renderTarget) {
         if (renderTarget === undefined) {
-            var size = this.renderer.getDrawingBufferSize()
+            var size = this.renderer.getDrawingBufferSize(new THREE.Vector2())
 
             renderTarget = this.renderTarget1.clone()
             renderTarget.setSize(size.width, size.height)

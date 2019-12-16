@@ -2346,7 +2346,7 @@ function addPrimitiveAttributes(geometry, primitiveDef, parser) {
         return parser
             .getDependency('accessor', accessorIndex)
             .then(function(accessor) {
-                geometry.addAttribute(attributeName, accessor)
+                geometry.setAttribute(attributeName, accessor)
             })
     }
 
@@ -2480,7 +2480,7 @@ GLTFParser.prototype.loadGeometries = function(primitives) {
             geometry.userData = baseGeometry.userData
 
             for (var key in baseGeometry.attributes)
-                geometry.addAttribute(key, baseGeometry.attributes[key])
+                geometry.setAttribute(key, baseGeometry.attributes[key])
             for (var key in baseGeometry.morphAttributes)
                 geometry.morphAttributes[key] =
                     baseGeometry.morphAttributes[key]
@@ -2760,7 +2760,7 @@ GLTFParser.prototype.loadMesh = function(meshIndex) {
                         console.log(
                             'THREE.GLTFLoader: Duplicating UVs to support aoMap.'
                         )
-                        geometry.addAttribute(
+                        geometry.setAttribute(
                             'uv2',
                             new THREE.BufferAttribute(
                                 geometry.attributes.uv.array,
