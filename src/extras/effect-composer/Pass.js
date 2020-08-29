@@ -13,9 +13,9 @@ export default class {
         this.renderToScreen = false
     }
 
-    setSize(width, height) {}
+    setSize(/*width, height*/) {}
 
-    render(renderer, writeBuffer, readBuffer, deltaTime, maskActive) {
+    render(/*renderer, writeBuffer, readBuffer, deltaTime, maskActive*/) {
         console.error(
             'THREE.Pass: .render() must be implemented in derived pass.'
         )

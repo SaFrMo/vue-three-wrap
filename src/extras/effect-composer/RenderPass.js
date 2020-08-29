@@ -21,7 +21,7 @@ export default class extends Pass {
         this.needsSwap = false
     }
 
-    render(renderer, writeBuffer, readBuffer, deltaTime, maskActive) {
+    render(renderer, writeBuffer, readBuffer /*deltaTime, maskActive*/) {
         const oldAutoClear = renderer.autoClear
         renderer.autoClear = false
 

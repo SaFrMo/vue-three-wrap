@@ -32,7 +32,7 @@ export default class extends Pass {
         this.scene.add(this.quad)
     }
 
-    render(renderer, writeBuffer, readBuffer, deltaTime, maskActive) {
+    render(renderer, writeBuffer, readBuffer /*deltaTime, maskActive*/) {
         if (this.uniforms[this.textureID]) {
             this.uniforms[this.textureID].value = readBuffer.texture
         }
