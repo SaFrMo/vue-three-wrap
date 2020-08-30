@@ -2617,11 +2617,11 @@ GLTFParser.prototype.loadMesh = function(meshIndex) {
                     if (mesh.isSkinnedMesh === true) mesh.normalizeSkinWeights() // #15319
 
                     if (primitive.mode === WEBGL_CONSTANTS.TRIANGLE_STRIP) {
-                        mesh.drawMode = THREE.TriangleStripDrawMode
+                        // mesh.drawMode = THREE.TriangleStripDrawMode
                     } else if (
                         primitive.mode === WEBGL_CONSTANTS.TRIANGLE_FAN
                     ) {
-                        mesh.drawMode = THREE.TriangleFanDrawMode
+                        // mesh.drawMode = THREE.TriangleFanDrawMode
                     }
                 } else if (primitive.mode === WEBGL_CONSTANTS.LINES) {
                     mesh = new THREE.LineSegments(geometry, material)
