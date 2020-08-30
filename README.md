@@ -177,9 +177,9 @@ An example fragment shader using 2D simplex noise:
         uniform float time;
 
         void main() {
-            // increase the viewing area (* 3)
-            // scale from -1 -> 1 to 0 -> 2 (+ 1)
-            // scale from 0 -> 2 to 0 -> 1 (/ 2)
+            /* increase the viewing area (* 3) */
+            /* scale from -1 -> 1 to 0 -> 2 (+ 1) */
+            /* scale from 0 -> 2 to 0 -> 1 (/ 2) */
             float noise = (snoise((vUv + time) * 3.) + 1.) / 2.;
             vec4 dark = vec4(0., 0., 0., 1.);
             vec4 light = vec4(1.);
@@ -188,6 +188,8 @@ An example fragment shader using 2D simplex noise:
     </script>
 </vue-three-wrap>
 ```
+
+**Note that comments in your custom shaders must use `/* this format */`, not `// this format`.**
 
 ## Extras
 
