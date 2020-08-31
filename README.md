@@ -430,14 +430,46 @@ You can import `.gltf` and `.glb` files, [the format that Three prefers](https:/
 
 ### BMFont
 
-`vue-three-wrap` comes with methods to handle loading and displaying text with BMFonts.
+`vue-three-wrap` comes with methods to handle loading and displaying text with BMFonts. To use:
+
+1. Convert your font to a BMFont with a tool like [`msdf-bmfont`](https://github.com/Jam3/msdf-bmfont). Place the created `.fnt` and `.png` files in your project.
+1. Import the `bmfont` method from `vue-three-wrap/extras/bm-font`and use like this:
 
 ```html
 <template>
-    <vue-three-wrap class="object-loader" :start="start" />
+    <vue-three-wrap class="bmfont" :start="start" />
 </template>
 
 <script>
     import bmFont from 'vue-three-wrap/extras/bm-font'
+
+    export default {
+        methods: {
+            async start({ scene }) {
+
+            // `result` is an object with properties { font, texture, geometry, mesh, material }
+            const result = await bmFont({
+                // path to .fnt and .png files
+                fnt: '/your-font-file.fnt',
+                png: '/your-font-image.png',
+
+                // the text you want to display
+                text: 'Your text here!',
+
+                // OPTIONAL: options to pass to material - see the MSDFShader method here:
+                // https://tympanus.net/codrops/2019/10/10/create-text-in-three-js-with-three-bmfont-text/
+                opts: {
+                    // fragmentShader: `void main() { ... }`,
+                    // vertexShader: `...`
+                }
+            })
+
+            // mesh will be very large by default, so we're moving it away from the camera here
+            // mesh is also instantiated upside-down, so the bmFont method rotates it 180deg on the X axis
+            scene.add(result.mesh)
+            result.mesh.position.z = -130
+
+        }
+    }
 </script>
 ```

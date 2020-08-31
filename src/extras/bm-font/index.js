@@ -27,9 +27,9 @@ export const bmFont = ({ fnt, png, text }) => {
     })
 }
 
-export const quickText = async ({ fnt, png, text, opts }) => {
+export const quickText = async ({ fnt, png, text, opts = {} }) => {
     const { font, texture, geometry } = await bmFont({ fnt, png, text })
-    const mat = new THREE.RawShaderMaterial(
+    const material = new THREE.RawShaderMaterial(
         MSDFShader(
             {
                 map: texture,
@@ -43,10 +43,10 @@ export const quickText = async ({ fnt, png, text, opts }) => {
         )
     )
 
-    const mesh = new THREE.Mesh(geometry, mat)
+    const mesh = new THREE.Mesh(geometry, material)
     // default rotation fix
     mesh.rotation.set(Math.PI, 0, 0)
-    return { font, texture, geometry, mesh }
+    return { font, texture, geometry, mesh, material }
 }
 
 export default quickText

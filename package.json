@@ -1,6 +1,6 @@
 {
     "name": "vue-three-wrap",
-    "version": "3.4.0",
+    "version": "3.4.1",
     "description": "Vue component wrapping a THREE.js instance.",
     "main": "./dist/vue-three-wrap.common.js",
     "scripts": {
