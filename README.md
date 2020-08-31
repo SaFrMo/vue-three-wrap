@@ -9,11 +9,12 @@ See examples [here](https://three-examples.netlify.com/) ([source](https://githu
     1. [`start` and `update`](#start-and-update)
     1. [CSS Renderer](#css-renderer)
     1. [Shader Injection](#shader-injection)
-1. [Extras](#mixins)
+1. [Extras](#extras)
     1. [Raycaster](#raycaster)
     1. [Postprocessing](#postprocessing)
         1. [Post Shaders](#post-shaders)
     1. [Object Loader](#object-loader)
+    1. [BMFont](#b-m-font)
 
 ## Main
 
@@ -424,5 +425,19 @@ You can import `.gltf` and `.glb` files, [the format that Three prefers](https:/
             }
         }
     }
+</script>
+```
+
+### BMFont
+
+`vue-three-wrap` comes with methods to handle loading and displaying text with BMFonts.
+
+```html
+<template>
+    <vue-three-wrap class="object-loader" :start="start" />
+</template>
+
+<script>
+    import bmFont from 'vue-three-wrap/extras/bm-font'
 </script>
 ```
