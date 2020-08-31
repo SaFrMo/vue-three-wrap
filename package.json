@@ -1,11 +1,11 @@
 {
     "name": "vue-three-wrap",
-    "version": "3.3.02",
+    "version": "3.4.0",
     "description": "Vue component wrapping a THREE.js instance.",
     "main": "./dist/vue-three-wrap.common.js",
     "scripts": {
         "dev": "cd example && vue serve",
-        "buildExtras": "npx babel src/extras --out-dir extras --presets=@babel/preset-env",
+        "buildExtras": "npx babel src/extras --out-dir extras --presets=@babel/preset-env --plugins=@babel/plugin-transform-runtime",
         "buildComponent": "vue build --target lib --name vue-three-wrap ./src/VueThreeWrap.vue",
         "build": "npm run buildExtras && npm run buildComponent",
         "prepublishOnly": "npm run build"
@@ -25,6 +25,7 @@
         "sass-loader": "^7.1.0"
     },
     "dependencies": {
+        "@babel/plugin-transform-runtime": "7.11.0",
         "fh-components": "^1.4.15",
         "three": "0.111.0",
         "three-renderer-css3d": "^1.0.0"
