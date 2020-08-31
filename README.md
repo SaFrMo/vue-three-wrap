@@ -14,7 +14,7 @@ See examples [here](https://three-examples.netlify.com/) ([source](https://githu
     1. [Postprocessing](#postprocessing)
         1. [Post Shaders](#post-shaders)
     1. [Object Loader](#object-loader)
-    1. [BMFont](#b-m-font)
+    1. [BMFont](#bmfont)
 
 ## Main
 
