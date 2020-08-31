@@ -446,29 +446,29 @@ You can import `.gltf` and `.glb` files, [the format that Three prefers](https:/
     export default {
         methods: {
             async start({ scene }) {
+                // `result` is an object with properties { font, texture, geometry, mesh, material }
+                const result = await bmFont({
+                    // path to .fnt and .png files
+                    fnt: '/your-font-file.fnt',
+                    png: '/your-font-image.png',
 
-            // `result` is an object with properties { font, texture, geometry, mesh, material }
-            const result = await bmFont({
-                // path to .fnt and .png files
-                fnt: '/your-font-file.fnt',
-                png: '/your-font-image.png',
+                    // the text you want to display
+                    text: 'Your text here!',
 
-                // the text you want to display
-                text: 'Your text here!',
+                    // OPTIONAL: options to pass to material - see the MSDFShader method here:
+                    // https://tympanus.net/codrops/2019/10/10/create-text-in-three-js-with-three-bmfont-text/
+                    opts: {
+                        // fragmentShader: `void main() { ... }`,
+                        // vertexShader: `...`
+                        // etc
+                    }
+                })
 
-                // OPTIONAL: options to pass to material - see the MSDFShader method here:
-                // https://tympanus.net/codrops/2019/10/10/create-text-in-three-js-with-three-bmfont-text/
-                opts: {
-                    // fragmentShader: `void main() { ... }`,
-                    // vertexShader: `...`
-                }
-            })
-
-            // mesh will be very large by default, so we're moving it away from the camera here
-            // mesh is also instantiated upside-down, so the bmFont method rotates it 180deg on the X axis
-            scene.add(result.mesh)
-            result.mesh.position.z = -130
-
+                // mesh will be very large by default, so we're moving it away from the camera here
+                // mesh is also instantiated upside-down, so the bmFont method rotates it 180deg on the X axis
+                scene.add(result.mesh)
+                result.mesh.position.z = -130
+            }
         }
     }
 </script>
